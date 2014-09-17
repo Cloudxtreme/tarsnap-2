@@ -9,16 +9,15 @@ wget --quiet https://www.tarsnap.com/download/$PACKAGE-autoconf-$VERSION.tgz
 
 echo "Extracting download..."
 tar -zxvf $PACKAGE-autoconf-$VERSION.tgz > /dev/null 2>&1
-mv $PACKAGE-autoconf-$VERSION tmp
 
 echo "Compiling..."
 mkdir /tmp/$PACKAGE-installdir
-cd tmp
+cd $PACKAGE-autoconf-$VERSION
 ./configure > /dev/null 2>&1
 make all install clean DESTDIR=/tmp/$PACKAGE-installdir > /dev/null 2>&1
+cd ..
 
 echo "Packaging..."
-cd ..
 fpm \
   --vendor "Colin Percival <cperciva@tarsnap.com>" \
   --maintainer "Matthew Gall <repo@matthewgall.com>" \
@@ -32,5 +31,5 @@ fpm \
   -p $PACKAGE-VERSION_ARCH.deb usr > /dev/null 2>&1
 
 echo "Cleaning up..."
-rm -rf tmp /tmp/$PACKAGE-installdir
+rm -rf $PACKAGE-autoconf-$VERSION /tmp/$PACKAGE-installdir
 rm -rf *.tgz
